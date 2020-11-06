@@ -28,9 +28,15 @@ searchPattern = "QuickSave_*.sav"
 def lastModified(filePath):
    return os.path.getmtime(filePath)
 
-# get the sha1 hash of a file
-def hashSha1(filePath):
-   return hashlib.sha1(filePath).hexdigest()
+# get the sha1 hash of a raw bytes
+def hashSha1(rawBytes):
+   return hashlib.sha1(rawBytes).hexdigest()
+
+# read an OS file into memory and get the sha1 hash of the file
+def hashSha1File(filePath):
+   with open(filePath,'rb') as bufferedReader:
+      rawBytes = bufferedReader.read()
+      return hashSha1(rawBytes)
 
 # get absolute file OS path for a relative path
 def absolutePath(filePath):
@@ -49,7 +55,10 @@ sp = joinPath(absolutePath(rootDirectory),searchPattern)
 print(sp)
 
 for file in glob.glob(sp):
-   print(file)
+   print(hashSha1File(file),file)
+
+   print("")
+   print("")
 
 print("Startup sequence complete")
 
