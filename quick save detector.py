@@ -55,6 +55,11 @@ fullGlobSearch = joinPath(absolutePath(rootDirectory),globSearchPattern)
 def getGlobFiles():
    return glob.glob(fullGlobSearch)
 
+# copy OS file
+def copyFile(source,destination):
+   shutil.copy2(source,destination)
+
+
 # global cache for hash records
 hashRecords = {}
 
@@ -62,7 +67,7 @@ hashRecords = {}
 # trigger callback for any new or changed file
 def scan(callback):
    #print(hashRecords)
-   print(fullGlobSearch)
+   #print(fullGlobSearch)
    for file in getGlobFiles():
       fileHash = hashSha1File(file)
 
@@ -79,6 +84,18 @@ def scan(callback):
 # callback for dealing with new or changed files
 def callback(fileName,fileHash,cause):
    print("CALLBACK",cause,fileHash,fileName)
+
+   fileSplit = os.path.splitext(fileName)
+
+   destination = fileSplit[0] + '.' + fileHash + fileSplit[1] 
+
+   print( destination )
+
+   hashRecords[destination] = fileHash
+
+   copyFile(fileName, destination)
+
+   print("")
 
 
 # polling loop for scanning
