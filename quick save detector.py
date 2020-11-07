@@ -65,10 +65,12 @@ def scan(callback):
       fileHash = hashSha1File(file)
 
       if file not in hashRecords:
-         callback(file,"new")
+         if callback:
+            callback(file,"new")
          
       elif fileHash != hashRecords[file]:
-         callback(file,"diff")
+         if callback:
+            callback(file,"diff")
 
       hashRecords[file] = fileHash
 
@@ -80,7 +82,7 @@ def callback(fileName,cause):
 
 scan(callback)
 scan(callback)
-scan(callback)
+scan(None)
 scan(callback)
 scan(callback)
 scan(callback)
