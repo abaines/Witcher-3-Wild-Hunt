@@ -59,6 +59,16 @@ def getGlobFiles():
 def copyFile(source,destination):
    shutil.copy2(source,destination)
 
+# OS sound beep
+def beep(frequency, duration):
+   winsound.Beep(frequency,duration)
+
+def beep1():
+   beep(120,60)
+
+def beep2():
+   beep(320,60)
+
 
 # global cache for hash records
 hashRecords = {}
@@ -83,6 +93,7 @@ def scan(callback):
 
 # callback for dealing with new or changed files
 def callback(fileName,fileHash,cause):
+   beep1()
    print("CALLBACK",cause,fileHash,fileName)
 
    fileSplit = os.path.splitext(fileName)
@@ -96,6 +107,7 @@ def callback(fileName,fileHash,cause):
    copyFile(fileName, destination)
 
    print("")
+   beep2()
 
 
 # polling loop for scanning
@@ -111,10 +123,13 @@ def threader():
 
 # Initialization
 
+beep1()
+
 scan(None)
 
 threader()
 
+beep2()
 
 print("Startup sequence complete")
 
