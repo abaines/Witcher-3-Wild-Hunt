@@ -18,7 +18,7 @@ import winsound
 
 rootDirectory = "../gamesaves/"
 
-searchPattern = "QuickSave_*.sav"
+globSearchPattern = "QuickSave_*.sav"
 
 
 
@@ -46,19 +46,44 @@ def absolutePath(filePath):
 def joinPath(base,bonus):
    return os.path.join(base,bonus)
 
+# full glob search text
+fullGlobSearch = joinPath(absolutePath(rootDirectory),globSearchPattern)
 
+# get list of files matching the glob search pattern
+def getGlobFiles():
+   return glob.glob(fullGlobSearch)
+
+# global cache for hash records
+hashRecords = {}
+
+# scan for any file changes among hash records
+# trigger callback for any new or changed file
+def scan(callback):
+   #print(hashRecords)
+   print(fullGlobSearch)
+   for file in getGlobFiles():
+      fileHash = hashSha1File(file)
+
+      if file not in hashRecords:
+         callback(file,"new")
+         
+      elif fileHash != hashRecords[file]:
+         callback(file,"diff")
+
+      hashRecords[file] = fileHash
+
+# callback for dealing with new or changed files
+def callback(fileName,cause):
+   print("CALLBACK",cause,fileName)
 
 # temp space
 
-sp = joinPath(absolutePath(rootDirectory),searchPattern)
-
-print(sp)
-
-for file in glob.glob(sp):
-   print(hashSha1File(file),file)
-
-   print("")
-   print("")
+scan(callback)
+scan(callback)
+scan(callback)
+scan(callback)
+scan(callback)
+scan(callback)
 
 print("Startup sequence complete")
 
