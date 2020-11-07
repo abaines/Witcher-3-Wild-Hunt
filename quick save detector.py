@@ -20,6 +20,8 @@ rootDirectory = "../gamesaves/"
 
 globSearchPattern = "QuickSave_*.sav"
 
+scanPeriod = 3.0
+
 
 
 # code method definitions
@@ -66,26 +68,36 @@ def scan(callback):
 
       if file not in hashRecords:
          if callback:
-            callback(file,"new")
+            callback(file,fileHash,"new")
          
       elif fileHash != hashRecords[file]:
          if callback:
-            callback(file,"diff")
+            callback(file,fileHash,"diff")
 
       hashRecords[file] = fileHash
 
 # callback for dealing with new or changed files
-def callback(fileName,cause):
-   print("CALLBACK",cause,fileName)
+def callback(fileName,fileHash,cause):
+   print("CALLBACK",cause,fileHash,fileName)
 
-# temp space
 
-scan(callback)
-scan(callback)
+# polling loop for scanning
+def threader():
+
+   try:
+      scan(callback)
+   except:
+      pass
+
+   threading.Timer(scanPeriod,threader).start()
+
+
+# Initialization
+
 scan(None)
-scan(callback)
-scan(callback)
-scan(callback)
+
+threader()
+
 
 print("Startup sequence complete")
 
