@@ -91,6 +91,8 @@ def scan(callback):
 
       hashRecords[file] = fileHash
 
+      time.sleep(1)
+
 # callback for dealing with new or changed files
 def callback(fileName,fileHash,cause):
    beep1()
