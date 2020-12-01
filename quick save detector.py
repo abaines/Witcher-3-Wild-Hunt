@@ -85,7 +85,7 @@ def scan(callback):
       if file not in hashRecords:
          if callback:
             callback(file,fileHash,"new")
-         
+
       elif fileHash != hashRecords[file]:
          if callback:
             callback(file,fileHash,"diff")
@@ -101,7 +101,7 @@ def callback(fileName,fileHash,cause):
 
    fileSplit = os.path.splitext(fileName)
 
-   destination = fileSplit[0] + '.' + fileHash + fileSplit[1] 
+   destination = fileSplit[0] + '.' + fileHash + fileSplit[1]
 
    print( destination )
 
