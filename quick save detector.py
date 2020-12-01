@@ -119,12 +119,14 @@ def setTitle(titleText):
 # polling loop for scanning
 def threader():
 
+   setTitle("+")
    try:
       scan(callback)
    except:
       pass
 
    threading.Timer(scanPeriod,threader).start()
+   setTitle("=")
 
 
 # Initialization
@@ -137,5 +139,6 @@ threader()
 
 beep2()
 
+setTitle("Startup sequence complete")
 print("Startup sequence complete")
 
