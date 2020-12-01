@@ -12,6 +12,7 @@ import sys
 import threading
 import time
 import winsound
+import ctypes
 
 
 # config / settings / options
@@ -110,6 +111,9 @@ def callback(fileName,fileHash,cause):
 
    print("")
    beep2()
+
+def setTitle(titleText):
+	ctypes.windll.kernel32.SetConsoleTitleW(titleText)
 
 
 # polling loop for scanning
