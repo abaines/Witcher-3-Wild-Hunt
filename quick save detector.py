@@ -107,7 +107,7 @@ def getLastSaveText():
 # callback for dealing with new or changed files
 def callback(fileName,fileHash,cause):
    beep1()
-   print("CALLBACK",cause,fileHash,fileName)
+   print("CALLBACK",cause,fileHash, fileName.rsplit('\\', 1)[-1] ) #TODO: make slash direction independent
    global g_lastSave
    g_lastSave = time.time()
 
@@ -115,7 +115,7 @@ def callback(fileName,fileHash,cause):
 
    destination = fileSplit[0] + '.' + fileHash + fileSplit[1]
 
-   print( destination )
+   print( destination.rsplit('\\', 1)[-1] ) #TODO: make slash direction independent
 
    hashRecords[destination] = fileHash
 
