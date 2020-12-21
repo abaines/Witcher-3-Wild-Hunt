@@ -113,7 +113,7 @@ def callback(fileName,fileHash,cause):
    beep2()
 
 def setTitle(titleText):
-	ctypes.windll.kernel32.SetConsoleTitleW(titleText)
+   ctypes.windll.kernel32.SetConsoleTitleW(titleText)
 
 
 # polling loop for scanning
