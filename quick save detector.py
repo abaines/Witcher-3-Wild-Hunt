@@ -94,10 +94,22 @@ def scan(callback):
 
       time.sleep(0)
 
+g_lastSave = -1
+
+def getLastSaveText():
+   if g_lastSave>0:
+      delta = time.time() - g_lastSave
+      return str(int(delta))
+   else:
+      return "!"
+
+
 # callback for dealing with new or changed files
 def callback(fileName,fileHash,cause):
    beep1()
    print("CALLBACK",cause,fileHash,fileName)
+   global g_lastSave
+   g_lastSave = time.time()
 
    fileSplit = os.path.splitext(fileName)
 
@@ -119,14 +131,15 @@ def setTitle(titleText):
 # polling loop for scanning
 def threader():
 
-   setTitle("+")
+   setTitle(getLastSaveText() + " +")
    try:
       scan(callback)
    except:
       pass
 
+   setTitle(getLastSaveText() + " = = =")
+
    threading.Timer(scanPeriod,threader).start()
-   setTitle("=")
 
 
 # Initialization
